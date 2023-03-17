@@ -57,7 +57,7 @@ class Follow(models.Model):
         verbose_name='follower Подписчик'
     )
     # ссылка на объект пользователя, на которого подписываются
-    author = models.ForeignKey(
+    following = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='following',
@@ -67,7 +67,7 @@ class Follow(models.Model):
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=["user", "author", ],
+                fields=["user", "following", ],
                 name='unique_follow',
             ),
         ]

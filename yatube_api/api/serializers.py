@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
+# from rest_framework.validators import UniqueTogetherValidator
 
 from posts.models import Post, Group, Comment, Follow
 
@@ -33,7 +33,7 @@ class FollowSerializer(serializers.ModelSerializer):
         # ]
 
     def validate(self, data):
-        if self.context['request'].user == data['author']:
+        if self.context['request'].user == data['following']:
             raise serializers.ValidationError('You can not follow yourself')
         return data
 

@@ -19,7 +19,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = [IsAuthorOrReadOnly, IsAuthenticated]
-    search_fields = ('author',)
+    search_fields = ('following',)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

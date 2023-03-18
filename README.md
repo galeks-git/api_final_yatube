@@ -10,7 +10,11 @@ git clone https://github.com/galeks-git/api_final_yatube.git
 ```
 
 ```
+<<<<<<< HEAD
 cd api final
+=======
+cd api_final
+>>>>>>> 29467db (sprint9 project 20230317 home)
 ```
 
 Cоздать и активировать виртуальное окружение:

@@ -47,9 +47,9 @@ class CommentAdmin(admin.ModelAdmin):
 
 class FollowAdmin(admin.ModelAdmin):
     # Перечисляем поля, которые должны отображаться в админке
-    list_display = ('pk', 'user', 'author',)
+    list_display = ('pk', 'user', 'following',)
     # Добавляем возможность фильтрации по дате
-    list_filter = ('user', 'author',)
+    list_filter = ('user', 'following',)
     empty_value_display = '-пусто-'
 
 

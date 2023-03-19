@@ -1,7 +1,11 @@
 from rest_framework import serializers
-# from rest_framework.validators import UniqueTogetherValidator
+from rest_framework.validators import UniqueTogetherValidator
+from django.contrib.auth import get_user_model
 
 from posts.models import Post, Group, Comment, Follow
+
+
+User = get_user_model()
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -15,32 +19,32 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     user = serializers.SlugRelatedField(
-        slug_field='username', read_only=True,
-        default=serializers.CurrentUserDefault()
+        slug_field='username',
+        queryset=User.objects.all(),
+        default=serializers.CurrentUserDefault(),
+    )
+    following = serializers.SlugRelatedField(
+        slug_field='username',
+        queryset=User.objects.all(),
     )
 
     class Meta:
         model = Follow
         fields = '__all__'
         
-        # validators = [
-        #     UniqueTogetherValidator(
-        #         queryset=Follow.objects.all(),
-        #         fields=('user', 'author')
-        #     )
-        # ]
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Follow.objects.all(),
+                fields=('user', 'following'),
+                message="UniqueTogetherValidator check"
+            )
+        ]
 
     def validate(self, data):
         if self.context['request'].user == data['following']:
             raise serializers.ValidationError('You can not follow yourself')
         return data
-
-    # def validate_author(self, value):
-    #     if value == self.request.user:
-    #         raise serializers.ValidationError('You can not follow yourself')
-    #     return value
 
 
 class GroupSerializer(serializers.ModelSerializer):

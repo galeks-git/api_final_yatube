@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework import filters
+from rest_framework import mixins
 from rest_framework.permissions import (
     IsAuthenticated, IsAuthenticatedOrReadOnly
 )
@@ -19,7 +20,9 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = GroupSerializer
 
 
-class FollowViewSet(viewsets.ModelViewSet):
+class FollowViewSet(mixins.CreateModelMixin,
+                    mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
     serializer_class = FollowSerializer
     permission_classes = [IsUserOrReadOnly, IsAuthenticated]
     filter_backends = [filters.SearchFilter, ]
@@ -29,8 +32,9 @@ class FollowViewSet(viewsets.ModelViewSet):
     )
 
     def get_queryset(self):
-        return Follow.objects.filter(user=self.request.user)
-
+        queryset = Follow.objects.filter(user=self.request.user)
+        return queryset
+    
     def perform_create(self, serializer):
         return serializer.save(
             user=self.request.user,

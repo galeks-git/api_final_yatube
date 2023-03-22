@@ -1,8 +1,10 @@
 from rest_framework import permissions
 
+MSG_USR_NO_RIGHTS = 'Пользователю не хватает прав для выполнения операции.'
+
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
-    message = 'Пользователю не хватает прав для выполнения операции.'
+    message = MSG_USR_NO_RIGHTS
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
@@ -11,7 +13,7 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 
 
 class IsUserOrReadOnly(permissions.BasePermission):
-    message = 'Пользователю не хватает прав для выполнения операции.'
+    message = MSG_USR_NO_RIGHTS
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
